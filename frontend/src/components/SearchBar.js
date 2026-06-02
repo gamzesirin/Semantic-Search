@@ -1,8 +1,8 @@
 import React from 'react';
 
-function SearchBar({ query, setQuery, onSearch, onCompare, onAsk, loading }) {
+function SearchBar({ query, setQuery, onSubmit, submitLabel, loadingLabel, placeholder, loading }) {
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') onAsk();
+    if (e.key === 'Enter') onSubmit();
   };
 
   return (
@@ -13,19 +13,17 @@ function SearchBar({ query, setQuery, onSearch, onCompare, onAsk, loading }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Bir soru sorun veya arama yapın... (örn: Merkez Bankası faiz kararı ne oldu?)"
+          placeholder={placeholder}
           className="search-input"
         />
       </div>
       <div className="search-buttons">
-        <button onClick={onAsk} disabled={loading || !query.trim()} className="btn btn-ask">
-          {loading ? 'Cevaplaniyor...' : 'Soru Sor'}
-        </button>
-        <button onClick={onSearch} disabled={loading || !query.trim()} className="btn btn-primary">
-          {loading ? 'Araniyor...' : 'Ara'}
-        </button>
-        <button onClick={onCompare} disabled={loading || !query.trim()} className="btn btn-compare">
-          {loading ? 'Karsilastiriliyor...' : 'Karsilastir'}
+        <button
+          onClick={onSubmit}
+          disabled={loading || !query.trim()}
+          className="btn btn-primary btn-block"
+        >
+          {loading ? loadingLabel : submitLabel}
         </button>
       </div>
     </div>
