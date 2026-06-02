@@ -1,8 +1,8 @@
 import React from 'react';
 
-function SearchBar({ query, setQuery, onSearch, onCompare, loading }) {
+function SearchBar({ query, setQuery, onSearch, onCompare, onAsk, loading }) {
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') onSearch();
+    if (e.key === 'Enter') onAsk();
   };
 
   return (
@@ -13,13 +13,16 @@ function SearchBar({ query, setQuery, onSearch, onCompare, loading }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Arama yapın..."
+          placeholder="Bir soru sorun veya arama yapın... (örn: Merkez Bankası faiz kararı ne oldu?)"
           className="search-input"
         />
       </div>
       <div className="search-buttons">
+        <button onClick={onAsk} disabled={loading || !query.trim()} className="btn btn-ask">
+          {loading ? 'Cevaplaniyor...' : 'Soru Sor'}
+        </button>
         <button onClick={onSearch} disabled={loading || !query.trim()} className="btn btn-primary">
-          {loading ? 'Aranıyor...' : 'Ara'}
+          {loading ? 'Araniyor...' : 'Ara'}
         </button>
         <button onClick={onCompare} disabled={loading || !query.trim()} className="btn btn-compare">
           {loading ? 'Karsilastiriliyor...' : 'Karsilastir'}

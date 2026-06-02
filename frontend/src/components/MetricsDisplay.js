@@ -5,9 +5,9 @@ function MetricsDisplay({ stats }) {
 
   const metrics = [
     { value: stats.total_documents?.toLocaleString() || '-', label: 'Dokuman' },
+    { value: stats.index_status?.total_chunks?.toLocaleString() || '-', label: 'Parca (Chunk)' },
     { value: stats.index_status?.embedding_dimension || '-', label: 'Vektor Boyutu' },
-    { value: stats.index_status?.faiss_vectors?.toLocaleString() || '-', label: 'FAISS' },
-    { value: stats.index_status?.chroma_count?.toLocaleString() || '-', label: 'ChromaDB' },
+    { value: stats.index_status?.faiss_vectors?.toLocaleString() || '-', label: 'FAISS Vektor' },
   ];
 
   return (

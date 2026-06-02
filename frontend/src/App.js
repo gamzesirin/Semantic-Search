@@ -4,6 +4,7 @@ import FilterPanel from './components/FilterPanel';
 import MetricsDisplay from './components/MetricsDisplay';
 import SearchResults from './components/SearchResults';
 import ComparisonPanel from './components/ComparisonPanel';
+import AnswerPanel from './components/AnswerPanel';
 import searchAPI from './services/api';
 import './App.css';
 
@@ -17,9 +18,10 @@ function App() {
   const [stats, setStats] = useState(null);
   const [searchResponse, setSearchResponse] = useState(null);
   const [comparison, setComparison] = useState(null);
+  const [answer, setAnswer] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [mode, setMode] = useState('search'); // 'search' or 'compare'
+  const [mode, setMode] = useState('search'); // 'search' | 'compare' | 'ask'
 
   useEffect(() => {
     loadInitialData();
@@ -43,6 +45,7 @@ function App() {
     setLoading(true);
     setError(null);
     setComparison(null);
+    setAnswer(null);
     setMode('search');
 
     try {
@@ -60,6 +63,7 @@ function App() {
     setLoading(true);
     setError(null);
     setSearchResponse(null);
+    setAnswer(null);
     setMode('compare');
 
     try {
@@ -68,6 +72,24 @@ function App() {
       setComparison(result);
     } catch (err) {
       setError('Karşılaştırma sırasında hata oluştu: ' + (err.response?.data?.detail || err.message));
+    }
+    setLoading(false);
+  };
+
+  const handleAsk = async () => {
+    if (!query.trim()) return;
+    setLoading(true);
+    setError(null);
+    setSearchResponse(null);
+    setComparison(null);
+    setMode('ask');
+
+    try {
+      const result = await searchAPI.ask(query, topK,
+                                         category === 'all' ? null : category);
+      setAnswer(result);
+    } catch (err) {
+      setError('Soru cevaplanırken hata oluştu: ' + (err.response?.data?.detail || err.message));
     }
     setLoading(false);
   };
@@ -87,6 +109,7 @@ function App() {
           setQuery={setQuery}
           onSearch={handleSearch}
           onCompare={handleCompare}
+          onAsk={handleAsk}
           loading={loading}
         />
 
@@ -103,6 +126,10 @@ function App() {
         />
 
         {error && <div className="error-message">{error}</div>}
+
+        {mode === 'ask' && answer && (
+          <AnswerPanel answer={answer} />
+        )}
 
         {mode === 'search' && searchResponse && (
           <SearchResults response={searchResponse} />

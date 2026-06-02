@@ -29,6 +29,15 @@ export const searchAPI = {
     return response.data;
   },
 
+  ask: async (question, topK = 5, category = null) => {
+    const response = await api.post('/ask', {
+      question,
+      top_k: topK,
+      category: category || null,
+    }, { timeout: 60000 }); // LLM cevabı biraz uzun sürebilir
+    return response.data;
+  },
+
   getStats: async () => {
     const response = await api.get('/stats');
     return response.data;

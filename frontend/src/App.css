@@ -143,6 +143,16 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
+.btn-ask {
+  background: #4f46e5;
+  color: #fff;
+}
+.btn-ask:hover:not(:disabled) {
+  background: #4338ca;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79,70,229,0.25);
+}
+
 /* ===== FILTER PANEL ===== */
 .filter-panel {
   display: flex;
@@ -408,6 +418,75 @@ body {
 .btn:disabled {
   animation: pulse 1.5s ease-in-out infinite;
 }
+
+/* ===== ANSWER (Q&A) PANEL ===== */
+.answer-panel { margin-top: 8px; }
+
+.answer-card {
+  background: #fff;
+  border: 1.5px solid #e0e7ff;
+  border-left: 4px solid #4f46e5;
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(79,70,229,0.06);
+}
+.answer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.answer-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4f46e5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.answer-time {
+  font-size: 11px;
+  color: #a1a1aa;
+  font-variant-numeric: tabular-nums;
+}
+.answer-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #27272a;
+  white-space: pre-wrap;
+}
+
+.sources-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 12px;
+}
+.sources-list { display: flex; flex-direction: column; gap: 10px; }
+.source-card {
+  display: flex;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.source-index {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #4f46e5;
+  background: #eef2ff;
+  border-radius: 6px;
+  padding: 4px 8px;
+  height: fit-content;
+}
+.source-body { flex: 1; }
+.source-title { font-size: 14px; font-weight: 600; color: #18181b; margin-bottom: 4px; }
+.source-text { font-size: 13px; color: #52525b; line-height: 1.55; margin-bottom: 8px; }
+.source-footer { display: flex; gap: 8px; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 640px) {
