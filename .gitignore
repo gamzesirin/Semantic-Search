@@ -1,3 +1,7 @@
+# Gizli anahtarlar (ASLA commit etme)
+.env
+backend/.env
+
 # Python
 backend/venv/
 venv/

@@ -1,12 +1,25 @@
+import os
+import time
+
+# .env dosyasindan ortam degiskenlerini yukle (GEMINI_API_KEY vb.)
+# Mevcut ortam degiskenlerini ezmez; .env yoksa sessizce gecer.
+try:
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+except ImportError:
+    pass
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.models import (
     SearchRequest, SearchResponse, SearchResult,
-    ComparisonRequest, ComparisonResponse, StatsResponse
+    ComparisonRequest, ComparisonResponse, StatsResponse,
+    AskRequest, AskResponse, AskSource
 )
 from app.search_engine import SearchEngine
+from app.qa_engine import answer_question, QAUnavailableError
 
 
 # Global arama motoru
@@ -108,6 +121,47 @@ async def compare(request: ComparisonRequest):
                 method="hybrid"
             )
         )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/ask", response_model=AskResponse)
+async def ask(request: AskRequest):
+    """Doküman soru-cevap (RAG): hibrit arama + Claude ile dayanaklı cevap."""
+    if not search_engine.is_initialized:
+        raise HTTPException(status_code=503, detail="Arama motoru henüz başlatılmadı")
+
+    start_time = time.time()
+    try:
+        # 1. Hibrit arama ile ilgili parçaları getir (retrieval)
+        chunks, _ = search_engine.search(
+            query=request.question,
+            method="hybrid",
+            top_k=request.top_k,
+            category=request.category,
+        )
+
+        # 2. Claude ile dayanaklı cevap üret (generation)
+        answer_text, sources = answer_question(request.question, chunks)
+
+        query_time = round((time.time() - start_time) * 1000, 2)
+        return AskResponse(
+            answer=answer_text,
+            sources=[
+                AskSource(
+                    doc_id=s.get("doc_id", s["id"]),
+                    title=s["title"],
+                    content=s["content"],
+                    category=s["category"],
+                    score=s["score"],
+                )
+                for s in sources
+            ],
+            query_time_ms=query_time,
+        )
+    except QAUnavailableError as e:
+        # Cevap üretimi yapılandırılmamış (ör. API anahtarı yok)
+        raise HTTPException(status_code=503, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
