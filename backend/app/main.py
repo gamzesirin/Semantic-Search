@@ -42,9 +42,22 @@ app = FastAPI(
 )
 
 # CORS ayarları (React frontend için)
+# Lokalde varsayılan localhost adresleri kullanılır.
+# Canlıda CORS_ORIGINS ortam değişkeniyle frontend alan adını ver:
+#   CORS_ORIGINS=https://siten.com,https://www.siten.com
+_default_origins = [
+    "http://localhost:3000", "http://localhost:3001",
+    "http://127.0.0.1:3000", "http://127.0.0.1:3001",
+]
+_env_origins = os.environ.get("CORS_ORIGINS", "")
+allowed_origins = (
+    [o.strip() for o in _env_origins.split(",") if o.strip()]
+    if _env_origins else _default_origins
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://127.0.0.1:3000", "http://127.0.0.1:3001"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

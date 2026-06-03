@@ -1,0 +1,24 @@
+# systemd servis dosyası — backend'i (uvicorn) arka planda, otomatik başlayan
+# bir servis olarak çalıştırır. Sunucuda /etc/systemd/system/ altına kopyalanır.
+#
+# ÖNEMLİ: Aşağıdaki yolları kendi sunucundaki gerçek yollarla değiştir.
+#   - User: backend'i çalıştıracak kullanıcı (genelde kendi kullanıcı adın)
+#   - WorkingDirectory: backend klasörünün tam yolu
+#   - ExecStart: o klasördeki venv içindeki uvicorn
+
+[Unit]
+Description=SemanticSearch FastAPI backend
+After=network.target
+
+[Service]
+Type=simple
+User=gamze
+WorkingDirectory=/home/gamze/Semantic-Search/backend
+# .env otomatik load_dotenv ile okunuyor; ayrıca systemd'ye de verebilirsin:
+EnvironmentFile=/home/gamze/Semantic-Search/backend/.env
+ExecStart=/home/gamze/Semantic-Search/backend/venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

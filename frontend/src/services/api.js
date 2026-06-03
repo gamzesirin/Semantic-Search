@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:8000/api';
+// Canlıda backend adresini REACT_APP_API_BASE ile ver (ör. https://api.siten.com/api)
+// Tanımlı değilse lokal geliştirme adresine düşer.
+const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000/api';
 
 const api = axios.create({
   baseURL: API_BASE,
