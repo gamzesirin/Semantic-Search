@@ -1,0 +1,11 @@
+# Docker imajına girmemesi gerekenler
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.log
+.env
+# Bunlar kalıcı disk (volume) üzerinden gelecek; imaja gömme:
+data/
+indexes/
+model_cache/
