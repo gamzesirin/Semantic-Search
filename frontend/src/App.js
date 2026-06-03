@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ModeTabs from './components/ModeTabs';
+import ModeInfo from './components/ModeInfo';
 import SearchBar from './components/SearchBar';
 import FilterPanel from './components/FilterPanel';
 import MetricsDisplay from './components/MetricsDisplay';
@@ -141,6 +142,8 @@ function App() {
         <MetricsDisplay stats={stats} />
 
         <ModeTabs active={activeTab} onChange={switchTab} />
+
+        <ModeInfo mode={activeTab} />
 
         <SearchBar
           query={query}
