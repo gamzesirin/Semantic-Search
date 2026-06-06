@@ -162,14 +162,10 @@ curl -X POST http://localhost:8000/api/ask \
 3. **Hibrit birleştirme:** **Karşılaştır** modunda `"yapay zeka"` → RRF'in BM25 + vektör listelerini nasıl birleştirdiğini gör.
 4. **Kaynak doğrulama:** Soru Sor cevabındaki `[Kaynak N]` atıflarını altta listelenen kaynaklarla karşılaştır — sistem uydurmaz, yalnızca veride olanı söyler.
 
-> Not: Veri kümesi ~2017 dönemi haberlerinden oluşur; güncel olayları değil, veride geçen konuları sor.
+## Siteden Ekran Görüntüleri
 
-## Sorun Giderme
+<img width="1920" height="2770" alt="image" src="https://github.com/user-attachments/assets/57a30493-562d-414b-a395-6a1751273922" />
 
-- **`ModuleNotFoundError: No module named 'app'`** — backend'i `backend/` klasöründen çalıştır: `python -m uvicorn app.main:app`.
-- **Soru Sor 503 / "GEMINI_API_KEY ayarlı değil"** — `backend/.env` içine geçerli bir anahtar ekle ve backend'i yeniden başlat.
-- **Gemini `429 RESOURCE_EXHAUSTED` / kota 0** — anahtarının o model için ücretsiz kotası yok; `.env`'de `GEMINI_MODEL` değerini desteklenen başka bir modelle değiştir (ör. `gemini-2.5-flash`).
-- **CORS hatası** — `app/main.py` içindeki `allow_origins` listesinde frontend portu (3000/3001) olmalı.
-- **Bellek yetersiz** — `app/main.py` içindeki `search_engine.initialize(max_docs=5000)` değerini düşür.
-- **Veri kümesi indirilemedi** — `data_loader.py` otomatik olarak örnek haberlerle devam eder; üretim için `backend/data/turkish_news.csv`'yi manuel ekle.
-- **Windows konsolunda kodlama hatası** — backend'i `PYTHONIOENCODING=utf-8` ile başlat.
+<img width="1920" height="1834" alt="image" src="https://github.com/user-attachments/assets/f1a9b479-f1b0-4a47-9ca7-08fa2a529374" />
+
+<img width="1920" height="1671" alt="image" src="https://github.com/user-attachments/assets/6e63bb1e-b4dd-48bb-a6a2-53241a0b7b9c" />
